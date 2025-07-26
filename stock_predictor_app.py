@@ -9,12 +9,12 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, LSTM
 import matplotlib.pyplot as plt
 
-# Helper: Load data
+# Load data
 def load_data(ticker, start, end):
     data = yf.download(ticker, start=start, end=end)
     return data[['Close']]
 
-# Helper: Preprocess for LSTM
+# Preprocess for LSTM
 def preprocess_data(data, window_size):
     close_prices = data['Close'].values.reshape(-1, 1)
 
@@ -32,7 +32,7 @@ def preprocess_data(data, window_size):
 
     return X_scaled, y_scaled, scaler
 
-# Helper: Build the LSTM model
+# Build the LSTM model
 def build_model(input_shape):
     model = Sequential()
     model.add(LSTM(64, activation='tanh', input_shape=input_shape, return_sequences=True))
@@ -74,7 +74,7 @@ if st.button("Predict"):
         else:
             st.success("Data loaded. Training model...")
 
-            window_size = 180
+            window_size = 365
             X_scaled, y_scaled, scaler = preprocess_data(data, window_size)
 
             model = build_model((window_size, 1))
